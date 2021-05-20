@@ -1,6 +1,11 @@
+version: '3'
+services:
+  logstash:
+    image: crmycontainers20210519.azurecr.io/logstash:7.12.1
+
 volumes:
-  esdata:
+  lsdata:
     driver: azure_file
     driver_opts:
-      share_name: esdata
+      share_name: lsdata
       storage_account_name: stesdata20210519 
