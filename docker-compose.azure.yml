@@ -1,0 +1,6 @@
+volumes:
+  esdata:
+    driver: azure_file
+    driver_opts:
+      share_name: esdata
+      storage_account_name: stesdata20210519 

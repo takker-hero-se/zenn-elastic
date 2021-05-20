@@ -1,0 +1,56 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  logstash:
+    build: ./logstash
+    container_name: logstash
+    ports:
+      - "5045:5044"
+      - "9601:9600"
+    networks:
+      - elastic
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+networks:
+  elastic:
+    driver: bridge
+
